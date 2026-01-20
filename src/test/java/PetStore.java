@@ -12,7 +12,7 @@ public class PetStore {
         RestAssured.baseURI = "https://petstore.swagger.io/v2";
     }
 
-    // --- POSITIVE SCENARIOS ---
+   
 
     @Test(priority = 1)
     public void testCreatePet() {
@@ -66,11 +66,11 @@ public class PetStore {
             .statusCode(200);
     }
 
-    // --- NEGATIVE SCENARIOS ---
+    
 
     @Test
     public void testGetNonExistentPet() {
-        // ID that likely doesn't exist
+        
         given()
             .pathParam("petId", 99999999)
         .when()
@@ -82,7 +82,7 @@ public class PetStore {
 
     @Test
     public void testCreatePetWithInvalidData() {
-        // Sending a string where an ID (long) is expected or malformed JSON
+        
         String invalidBody = "{ \"id\": \"not-a-number\", \"name\": \"broken\" }";
 
         given()
@@ -92,17 +92,16 @@ public class PetStore {
             .post("/pet")
         .then()
             .statusCode(anyOf(is(400), is(500))); 
-            // Swagger Petstore often returns 500 for parsing errors instead of 400
-    }
+          
 
     @Test
     public void testDeletePetWithInvalidId() {
-        // Providing a non-numeric ID in the path
+        
         given()
             .pathParam("petId", "abc_123")
         .when()
             .delete("/pet/{petId}")
         .then()
-            .statusCode(404); // Or 400 depending on API strictness
+            .statusCode(404);
     }
 }
